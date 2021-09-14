@@ -25,7 +25,7 @@ class Game:
 
     def asteroidCollision(self, enemyXcoord, enemyYcoord, bulletXcoord, bulletYcoord):
         isCollision = math.sqrt((math.pow(enemyXcoord - bulletXcoord, 2)) + (math.pow(enemyYcoord - bulletYcoord, 2)))
-        if isCollision < 45:
+        if isCollision < 55:
             return True
         else:
             return False

@@ -5,19 +5,28 @@ class Asteroid:
     asteroidXcoord = []
     asteroidYcoord = []
     asteroidLives = []
-    numOfAsteroids = 3
+    numOfAsteroids = 5
 
     def asteroidCreation(self):
         counter = 1
         for i in range(self.numOfAsteroids):
             self.asteroidIcon.append(pg.image.load('images/asteroid.png'))
-            if(counter == 1):
+            if counter == 1:
                 self.asteroidXcoord.append(50)
-            if (counter == 2):
+                self.asteroidYcoord.append(350)
+            if counter == 2:
                 self.asteroidXcoord.append(330)
-            if (counter == 3):
+                self.asteroidYcoord.append(350)
+            if counter == 3:
                 self.asteroidXcoord.append(640)
-            self.asteroidYcoord.append(350)
+                self.asteroidYcoord.append(350)
+            if counter == 4:
+                self.asteroidXcoord.append(170)
+                self.asteroidYcoord.append(250)
+            if counter == 5:
+                self.asteroidXcoord.append(510)
+                self.asteroidYcoord.append(250)
+
             self.asteroidLives.append(2)
             counter +=1
 
@@ -39,3 +48,4 @@ class Asteroid:
             if self.asteroidLives[i] == 0:
                 self.asteroidYcoord[i] = 2700
             self.asteroids(window, i, self.asteroidXcoord[i], self.asteroidYcoord[i])
+

@@ -53,6 +53,9 @@ while isClose:
         bullet.set_bulletYcoord(470)
     enemy.enemyMove(game, bullet, window)
     asteroid.lifeCicleAsteroid(bullet, game, window)
+    #enemy.get_positionEnemy()
+
+
 
     player.player(player.get_playerXcoord(), player.get_playerYcoord(), window)
     game.showScore(10, 10, window)

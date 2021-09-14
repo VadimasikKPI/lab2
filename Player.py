@@ -4,7 +4,7 @@ import pygame as pg
 
 class Player:
     playerIcon = pg.image.load('images/player.png')
-    playerXcoord = 360
+    playerXcoord = 384
     playerYcoord = 470
     playerSpeedChange = 0
 

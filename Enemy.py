@@ -7,7 +7,7 @@ class Enemy:
     enemyYcoord = []
     enemySpeedChange = []
     enemyHightChange = []
-    numOfEnemies = 6
+    numOfEnemies = 2
 
     def enemyCreation(self):
         for i in range(self.numOfEnemies):
@@ -22,6 +22,22 @@ class Enemy:
 
     def enemy(self, enemyX, enemyY, i, window):
         window.blit(self.enemyIcon[i], (enemyX, enemyY))
+
+    def get_positionEnemy(self):
+
+        widthPlace = []
+        heightPlace = []
+        for i in range(self.numOfEnemies):
+            if self.enemyXcoord[i]<800 and self.enemyYcoord[i]<512:
+                widthPlace.append(int(self.enemyXcoord[i]/64))
+                heightPlace.append(int(self.enemyYcoord[i]/64))
+            else:
+                widthPlace.append(-1)
+                heightPlace.append(-1)
+        print(heightPlace[0])
+
+
+
 
     def enemyMove(self, game, bullet, window):
 
@@ -42,6 +58,7 @@ class Enemy:
                 bullet.set_bulletIsReady("Ready")
                 game.set_score(10)
                 self.enemyYcoord[i] = 2000
+                self.enemySpeedChange[i] = 0
                 game.set_counterEnemy(1)
             self.enemy(self.enemyXcoord[i], self.enemyYcoord[i], i, window)
             if game.get_counterEnemy() == self.numOfEnemies:
@@ -50,5 +67,6 @@ class Enemy:
             if self.enemyYcoord[i] > 400 and self.enemyYcoord[i] < 1900:
                 for j in range(self.numOfEnemies):
                     self.enemyYcoord[j] = 1500
+                    self.enemySpeedChange[i] = 0
                 game.end_game_lose(window)
                 break
