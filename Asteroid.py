@@ -49,3 +49,13 @@ class Asteroid:
                 self.asteroidYcoord[i] = 2700
             self.asteroids(window, i, self.asteroidXcoord[i], self.asteroidYcoord[i])
 
+    def get_positionAsteroid(self):
+        widthPlace = []
+        heightPlace = []
+        for i in range(self.numOfAsteroids):
+            if self.asteroidXcoord[i]<800 and self.asteroidYcoord[i]<512:
+                widthPlace.append(int(self.asteroidXcoord[i]/64))
+                heightPlace.append(int(self.asteroidYcoord[i]/64))
+            else:
+                widthPlace.append(-1)
+                heightPlace.append(-1)

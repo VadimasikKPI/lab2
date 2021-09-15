@@ -1,13 +1,14 @@
 import pygame as pg
 import random
 
+
 class Enemy:
     enemyIcon = []
     enemyXcoord = []
     enemyYcoord = []
     enemySpeedChange = []
     enemyHightChange = []
-    numOfEnemies = 2
+    numOfEnemies = 4
 
     def enemyCreation(self):
         for i in range(self.numOfEnemies):
@@ -16,38 +17,32 @@ class Enemy:
             else:
                 self.enemyIcon.append(pg.image.load('images/enemy2.png'))
             self.enemyXcoord.append(random.randint(0, 800))
-            self.enemyYcoord.append(random.randint(50, 100))
-            self.enemySpeedChange.append(0.3)
+            self.enemyYcoord.append(random.randint(50, 150))
+
+            self.enemySpeedChange.append(0.2)
             self.enemyHightChange.append(40)
 
     def enemy(self, enemyX, enemyY, i, window):
         window.blit(self.enemyIcon[i], (enemyX, enemyY))
 
-    def get_positionEnemy(self):
-
-        widthPlace = []
-        heightPlace = []
-        for i in range(self.numOfEnemies):
-            if self.enemyXcoord[i]<800 and self.enemyYcoord[i]<512:
-                widthPlace.append(int(self.enemyXcoord[i]/64))
-                heightPlace.append(int(self.enemyYcoord[i]/64))
-            else:
-                widthPlace.append(-1)
-                heightPlace.append(-1)
-        print(heightPlace[0])
-
-
-
+    def get_positionEnemy(self, i):
+        if self.enemyXcoord[i] <= 800 and self.enemyYcoord[i] <= 512:
+            widthPlace = int(self.enemyXcoord[i] / 64)
+            heightPlace = int(self.enemyYcoord[i] / 64)
+        else:
+            widthPlace = -1
+            heightPlace = -1
+        return (heightPlace, widthPlace)
 
     def enemyMove(self, game, bullet, window):
 
         for i in range(self.numOfEnemies):
             self.enemyXcoord[i] += self.enemySpeedChange[i]
             if self.enemyXcoord[i] <= 0:
-                self.enemySpeedChange[i] = 0.3
+                self.enemySpeedChange[i] = 0.2
                 self.enemyYcoord[i] += self.enemyHightChange[i]
             elif self.enemyXcoord[i] >= 740:
-                self.enemySpeedChange[i] = -0.3
+                self.enemySpeedChange[i] = -0.2
                 self.enemyYcoord[i] += self.enemyHightChange[i]
             self.enemy(self.enemyXcoord[i], self.enemyYcoord[i], i, window)
 
@@ -70,3 +65,7 @@ class Enemy:
                     self.enemySpeedChange[i] = 0
                 game.end_game_lose(window)
                 break
+
+
+    def get_numOfEnemy(self):
+        return self.numOfEnemies

@@ -49,3 +49,4 @@ class Game:
     def end_game_lose(self, window):
         gameOvertitle = self.gameOver.render("YOU LOSE! TRY NEXT TIME!", True, (255, 255, 255))
         window.blit(gameOvertitle, (50, 250))
+
