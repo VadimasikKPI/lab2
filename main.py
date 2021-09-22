@@ -22,7 +22,9 @@ algoCounter = 0
 enemy.enemyCreation()
 path = []
 enemyCoords = []
-#asteroid.asteroidCreation()
+# asteroid.asteroidCreation()
+
+
 
 
 isClose = True
@@ -44,7 +46,7 @@ while isClose:
                     bullet.bullet(bullet.get_bulletXcoord(), bullet.get_bulletYcoord(), window)
                     bullet.changeYcoord(-bullet.get_bulletHightChange())
             if event.key == pg.K_z:
-                algoCounter+=1
+                algoCounter += 1
                 if algoCounter == 1:
                     path = bfs(graph, player.get_positionPlayer(), enemy.get_positionEnemy())
                     print(path)
@@ -62,16 +64,18 @@ while isClose:
         bullet.set_bulletIsReady("Ready")
         bullet.set_bulletYcoord(470)
     enemy.enemyMove(game, bullet, window)
-    #asteroid.lifeCicleAsteroid(bullet, game, window)
-    #enemy.get_positionEnemy()
+    # asteroid.lifeCicleAsteroid(bullet, game, window)
+    # enemy.get_positionEnemy()
     for i in range(enemy.get_numOfEnemy()):
         path.append(bfs(graph, player.get_positionPlayer(), enemy.get_positionEnemy(i)))
-
-
-
-
+    final_path=path
+    for i in range(len(final_path)):
+        for j in range(len(final_path[i])):
+            (y, x) = final_path[i][j]
+            x = x*64
+            y = y*64
+            window.blit('images/line.png', (x, y))
 
     player.player(player.get_playerXcoord(), player.get_playerYcoord(), window)
     game.showScore(10, 10, window)
     pg.display.update()
-

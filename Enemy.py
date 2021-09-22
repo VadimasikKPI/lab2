@@ -8,7 +8,7 @@ class Enemy:
     enemyYcoord = []
     enemySpeedChange = []
     enemyHightChange = []
-    numOfEnemies = 4
+    numOfEnemies = 2
 
     def enemyCreation(self):
         for i in range(self.numOfEnemies):
