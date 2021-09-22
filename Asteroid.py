@@ -5,7 +5,7 @@ class Asteroid:
     asteroidXcoord = []
     asteroidYcoord = []
     asteroidLives = []
-    numOfAsteroids = 5
+    numOfAsteroids = 4
 
     def asteroidCreation(self):
         counter = 1
@@ -31,10 +31,12 @@ class Asteroid:
             counter +=1
 
     def asteroids(self, window, i, asteroidX, asteroidY):
+
         window.blit(self.asteroidIcon[i], (asteroidX, asteroidY))
 
-    def lifeCicleAsteroid(self, bullet, game, window):
+    def lifeCicleAsteroid(self, bullet, game, window, enemy):
         for i in range(self.numOfAsteroids):
+
             self.asteroids(window, i, self.asteroidXcoord[i], self.asteroidYcoord[i])
 
             isCollision = game.asteroidCollision(self.asteroidXcoord[i], self.asteroidYcoord[i], bullet.get_bulletXcoord(),
@@ -48,14 +50,15 @@ class Asteroid:
             if self.asteroidLives[i] == 0:
                 self.asteroidYcoord[i] = 2700
             self.asteroids(window, i, self.asteroidXcoord[i], self.asteroidYcoord[i])
+            if enemy.get_numOfEnemy() == 0:
+                for i in range(self.numOfAsteroids):
+                    self.asteroidYcoord[i] = 2700
 
-    def get_positionAsteroid(self):
-        widthPlace = []
-        heightPlace = []
-        for i in range(self.numOfAsteroids):
-            if self.asteroidXcoord[i]<800 and self.asteroidYcoord[i]<512:
-                widthPlace.append(int(self.asteroidXcoord[i]/64))
-                heightPlace.append(int(self.asteroidYcoord[i]/64))
-            else:
-                widthPlace.append(-1)
-                heightPlace.append(-1)
+    def get_positionAsteroid(self, i):
+        if self.asteroidXcoord[i] <= 800 and self.asteroidYcoord[i] <= 512:
+            widthPlace = int(self.asteroidXcoord[i] / 64)
+            heightPlace = int(self.asteroidYcoord[i] / 64)
+        else:
+            widthPlace = 0
+            heightPlace = 8
+        return (heightPlace, widthPlace)

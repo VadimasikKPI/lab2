@@ -8,7 +8,7 @@ class Game:
     score = 0
     fonts = pg.font.Font('freesansbold.ttf', 30)
     gameOver = pg.font.Font('freesansbold.ttf', 50)
-    counter_enemy = 0
+    countofEnemies = 0
 
     def showScore(self, scoreXcoord, scoreYcoord, window):
         totalScore = self.fonts.render("Score: " + str(self.score), True, (255, 255, 255))
@@ -35,11 +35,9 @@ class Game:
     def set_score(self, change):
         self.score += change
 
-    def set_counterEnemy(self, change):
-        self.counter_enemy += change
 
-    def get_counterEnemy(self):
-        return self.counter_enemy
+
+
 
     def end_game_win(self, window):
         gameOverTitle = self.gameOver.render("YOU WIN! CONGRATULATIONS", True, (255, 255, 255))
@@ -50,3 +48,9 @@ class Game:
         gameOvertitle = self.gameOver.render("YOU LOSE! TRY NEXT TIME!", True, (255, 255, 255))
         window.blit(gameOvertitle, (50, 250))
 
+    def find_asteroid_coords(self, asteroid):
+        asteroid_coords = []
+        for i in range(asteroid.numOfAsteroids):
+            asteroid_coords.append(asteroid.get_positionAsteroid(i))
+
+        return asteroid_coords
