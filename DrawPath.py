@@ -6,7 +6,7 @@ def drawPath_dfs(window, enemy, graph, player, asteroidcoords):
     path = []
     lastPath = []
     for i in range(enemy.get_numOfEnemy()):
-        path.append(bfs(graph, player.get_positionPlayer(), enemy.get_positionEnemy(i), asteroidcoords))
+        path.append(dfs(graph, player.get_positionPlayer(), enemy.get_positionEnemy(i), asteroidcoords))
     if lastPath != path:
         for i in range(len(lastPath)):
             lastPath.pop(i)

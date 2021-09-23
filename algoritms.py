@@ -1,4 +1,5 @@
 import time
+from queue import PriorityQueue
 counter = [1, 1, 1]
 def findTime(startTime, counter):
     result = time.time() - startTime
@@ -7,31 +8,33 @@ def findTime(startTime, counter):
 
 
 def dfs(graph, start, goal, asteroid_coords):
-    startTime =time.time()
-    stack = [start]
-    path = []
+    startTime = time.time()
     visited = []
-    for i in range(8):
-        for j in range(12):
-            visited[i][j] = 1
-    visited[start[0]][start[1]] = 1
-    while len(stack)!=0:
-        current_coord = stack.pop()
-        visited[current_coord[1]][current_coord[0]] = 1
-        for i in range(len(asteroid_coords)):
-            if current_coord == asteroid_coords[i]:
-                continue
-        if current_coord == goal:
-            findTime(startTime, counter[0])
-            counter[0] += 1
-            return path
+    path = []
+    fringe = PriorityQueue()
+    fringe.put((0, start, path, visited))
+    findTime(startTime, counter[0])
+    counter[0] -= 1
+    while not fringe.empty():
 
-        neighboring_nodes = graph[current_coord]
-        for node in neighboring_nodes:
-            stack.extend(node)
-        if len(neighboring_nodes) == 0:
-            stack.pop()
-            path.pop
+        depth, current_node, path, visited = fringe.get()
+        for i in range(len(asteroid_coords)):
+            if current_node == asteroid_coords[i]:
+                continue
+        if current_node == goal:
+
+            return path + [current_node]
+
+        visited = visited + [current_node]
+
+        child_nodes = graph[current_node]
+        for node in child_nodes:
+            if node not in visited:
+                if node == goal:
+                    return path + [node]
+                depth_of_node = len(path)
+                fringe.put((-depth_of_node, node, path + [node], visited))
+    return path
 
 
 
