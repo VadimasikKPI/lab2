@@ -4,7 +4,7 @@ class Bullet:
     bulletIcon = pg.image.load('images/star_bullet.png')
     bulletXcoord = 360
     bulletYcoord = 470
-    bulletHightChange = 0.75
+    bulletHightChange = 0.25
     bulletIsReady = "Ready"
 
     def bullet(self, bulletX, bulletY, window):

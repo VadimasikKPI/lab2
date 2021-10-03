@@ -5,7 +5,8 @@ from Bullet import Bullet
 from Settings import Game
 from Asteroid import Asteroid
 from DrawPath import *
-from algoritms import bfs, dfs
+from A_star import *
+#from algoritms import bfs, dfs
 from graph import graph
 
 pg.init()
@@ -31,6 +32,8 @@ asteroid.asteroidCreation()
 
 
 
+
+
 isClose = True
 while isClose:
     window.fill((0, 0, 0))
@@ -49,22 +52,22 @@ while isClose:
                     bullet.set_bulletXcoord(player.get_playerXcoord())
                     bullet.bullet(bullet.get_bulletXcoord(), bullet.get_bulletYcoord(), window)
                     bullet.changeYcoord(-bullet.get_bulletHightChange())
-            if event.key == pg.K_z:
-                tempBFS = True
-                tempDFS = False
-                tempUCS = False
-            if event.key == pg.K_x:
-                tempUCS = True
-                tempBFS = False
-                tempDFS = False
-            if event.key == pg.K_c:
-                tempDFS = True
-                tempBFS = False
-                tempUCS = False
-            if event.key == pg.K_f:
-                tempBFS = False
-                tempDFS = False
-                tempUCS = False
+            #if event.key == pg.K_z:
+                #tempBFS = True
+                #tempDFS = False
+                #tempUCS = False
+            #if event.key == pg.K_x:
+                #tempUCS = True
+                #tempBFS = False
+                #tempDFS = False
+            #if event.key == pg.K_c:
+                #tempDFS = True
+                #tempBFS = False
+                #tempUCS = False
+           # if event.key == pg.K_f:
+                #tempBFS = False
+                #tempDFS = False
+                #tempUCS = False
         if event.type == pg.KEYUP:
             if event.key == pg.K_LEFT or event.key == pg.K_RIGHT or event.key == pg.K_d or event.key == pg.K_a:
                 player.set_playerSpeedChange(0)
@@ -77,19 +80,20 @@ while isClose:
     if bullet.get_bulletYcoord() <= 0:
         bullet.set_bulletIsReady("Ready")
         bullet.set_bulletYcoord(470)
-    enemy.enemyMove(game, bullet, window, asteroid)
+    enemy.newEnemyMove(game, bullet, window, asteroid)
     asteroid.lifeCicleAsteroid(bullet, game, window, enemy)
     if enemy.get_numOfEnemy() == 0:
         game.end_game_win(window)
         temp = False
     asteroid_coord = game.find_asteroid_coords(asteroid)
-    if tempBFS:
-        drawPath_bfs(window, enemy, graph, player, asteroid_coord)
-    if tempDFS:
-        drawPath_dfs(window, enemy, graph, player, asteroid_coord)
-    if tempUCS:
-        drawPath_ucs(window, enemy, graph, player, asteroid_coord)
+    #if tempBFS:
+        #drawPath_bfs(window, enemy, graph, player, asteroid_coord)
+    #if tempDFS:
+        #drawPath_dfs(window, enemy, graph, player, asteroid_coord)
+    #if tempUCS:
+        #drawPath_ucs(window, enemy, graph, player, asteroid_coord)
 
+    drawPath_Astar(window, enemy, graph, player, bullet)
 
 
 
