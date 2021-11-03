@@ -1,13 +1,37 @@
 import time
 from queue import PriorityQueue
+from Node import Node
 counter = [1, 1, 1]
 def findTime(startTime, counter):
     result = time.time() - startTime
     if counter == 1:
         print(result)
 
+def dfs1(graph, start, goal):
+    frontier = PriorityQueue()
+    frontier.put(start, 0)
+    came_from = {}
+    cost_so_far = {}
+    came_from[start] = None
+    cost_so_far[start] = 0
 
-def dfs(graph, start, goal, asteroid_coords):
+    while not frontier.empty():
+        current = frontier.get()
+
+        if current == goal:
+            break
+
+        for next in graph.neighbors(current):
+            new_cost = cost_so_far[current] + graph.cost(current, next)
+            if next not in cost_so_far or new_cost < cost_so_far[next]:
+                cost_so_far[next] = new_cost
+                priority = new_cost
+                frontier.put(next, priority)
+                came_from[next] = current
+
+    return came_from
+
+def dfs(graph, start, goal):
     startTime = time.time()
     visited = []
     path = []
@@ -18,9 +42,6 @@ def dfs(graph, start, goal, asteroid_coords):
     while not fringe.empty():
 
         depth, current_node, path, visited = fringe.get()
-        for i in range(len(asteroid_coords)):
-            if current_node == asteroid_coords[i]:
-                continue
         if current_node == goal:
 
             return path + [current_node]
@@ -38,28 +59,22 @@ def dfs(graph, start, goal, asteroid_coords):
 
 
 
-def bfs(graph, start, goal, asteroid_coords):
+def bfs(graph, start, goal):
     startTime = time.time()
 
     queue = [start]
     parents = {start: None}
     while len(queue) != 0:
         current_coord = queue.pop(0)
-        for i in range(len(asteroid_coords)):
-            if current_coord == asteroid_coords[i]:
-                continue
-
         if current_coord == goal:
             findTime(startTime, counter[1])
             counter[1]-=1
             return get_path(parents, goal)
 
-        neighboring_nodes = graph[current_coord]
-
-        for node in neighboring_nodes:
-            if node not in parents:
-                parents[node] = current_coord
-                queue.append(node)
+        for next in graph.neighbors(current_coord):
+            if next not in parents:
+                parents[next] = current_coord
+                queue.append(next)
 
 
 def ucs(graph, start, goal, asteroid_coords):
@@ -94,3 +109,60 @@ def get_path(parents, finish_coord):
 
     return arr
 
+def evaluation_function(enemy, player):
+    centre_player = (
+        player.playerXcoord + 32,
+        player.playerYcoord + 32)
+    distances = []
+    for i in enemy.numOfEnemies:
+        distances.append((centre_player, (enemy.enemyXcoord[i] + 32, enemy.enemyYcoord[i] + 32)))
+    try:
+        minvalue = min(distances)
+    except ValueError:
+        minvalue = 0
+    return minvalue
+
+
+def alphabeta(node: Node, depth, a, b, maximizingPlayer):
+    if depth == 0 or node.is_terminal:
+        return (node.evaluation_function(), node)
+    if maximizingPlayer:
+        value = -float('inf')
+        best_node = node
+        for child in node.generate_children():
+            alphaResult, alphaNode = alphabeta(child, depth - 1, a, b, True)
+            if alphaResult > value:
+                value = alphaResult
+                best_node = child
+            if value >= b:
+                break  # (* b cutoff *)
+            if value > a:
+                a = value
+        return (value, best_node)
+    else:
+        worst_node = node
+        value = float('inf')
+
+        for child in node.generate_children():
+            alphaResult, alphaNode = alphabeta(child, depth - 1, a, b, False)
+            if alphaResult < value:
+                value = alphaResult
+                worst_node = child
+            if value <= a:
+                break
+            if value < b:
+                b = value
+        return (value, worst_node)
+
+
+def expectiminimax(node: Node, depth, maximizingPlayer):
+    if depth == 0 or node.is_terminal:
+        return (node.evaluation_function(), node)
+    if maximizingPlayer:
+        result = [expectiminimax(child, depth - 1, False) for child in node.generate_children()]
+        alphaResult, alphaNode = max(result, key=lambda x: x[0], default=node)
+        return (alphaResult / len(result), alphaNode)
+    else:
+        result = [expectiminimax(child, depth - 1, True) for child in node.generate_children()]
+        alphaResult, alphaNode = min(result, key=lambda x: x[0], default=node)
+        return (alphaResult / len(result), alphaNode)

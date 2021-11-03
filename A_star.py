@@ -44,12 +44,15 @@ def reconstruct_path(came_from, start, goal):
     path.reverse()
     return path
 
-def findWayToEnemy(path):
+def findWayToEnemy(path, num):
+    temp = 100
+    lendth ={ 0:100, 1:100, 2:100, 3:100}
+    index = 0
+    for i in range(num):
 
-    index = 5
-    for i in range(len(path)):
-        temp = len(path[i])
         if len(path[i]) <= temp:
+            lendth[i] = len(path[i])
+            temp = len(path[i])
             index = i
         else:
             continue

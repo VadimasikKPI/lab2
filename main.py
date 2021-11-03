@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 from Player import Player
 from Enemy import Enemy
@@ -5,9 +7,12 @@ from Bullet import Bullet
 from Settings import Game
 from Asteroid import Asteroid
 from DrawPath import *
+import time
+from WriterCSV import csv_write
 from A_star import *
 #from algoritms import bfs, dfs
 from graph import graph
+game_end_count=0
 
 pg.init()
 window = pg.display.set_mode((800, 600))
@@ -30,7 +35,7 @@ tempUCS = False
 lines = pg.image.load('line.png')
 asteroid.asteroidCreation()
 
-
+start_time = time.time()
 
 
 
@@ -77,10 +82,10 @@ while isClose:
         bullet.bullet(bullet.get_bulletXcoord(), bullet.get_bulletYcoord(), window)
         bullet.changeYcoord(-bullet.get_bulletHightChange())
     player.outOfBounds()
-    if bullet.get_bulletYcoord() <= 0:
+    if bullet.get_bulletYcoord() <= 10:
         bullet.set_bulletIsReady("Ready")
         bullet.set_bulletYcoord(470)
-    enemy.newEnemyMove(game, bullet, window, asteroid)
+    enemy.thirdEnemyMove(game, bullet, window, asteroid, player)
     asteroid.lifeCicleAsteroid(bullet, game, window, enemy)
     if enemy.get_numOfEnemy() == 0:
         game.end_game_win(window)
@@ -92,9 +97,17 @@ while isClose:
         #drawPath_dfs(window, enemy, graph, player, asteroid_coord)
     #if tempUCS:
         #drawPath_ucs(window, enemy, graph, player, asteroid_coord)
-
-    drawPath_Astar(window, enemy, graph, player, bullet)
-
+    if enemy.get_numOfEnemy()>0:
+        drawPath_Astar(window, enemy, graph, player, bullet)
+    else:
+        game_end_count +=1
+        game.end_game_win(window)
+        player.playerSpeedChange = 0
+        if game_end_count == 1:
+            last_time = time.time() - start_time
+            rand = random.choice(['expectimax minimax', 'alpha-beta pruning'])
+            print(rand)
+            csv_write('data.csv', [str(game.score), str(last_time), str('True'), str(rand)])
 
 
 
@@ -102,3 +115,4 @@ while isClose:
     player.player(player.get_playerXcoord(), player.get_playerYcoord(), window)
     game.showScore(10, 10, window)
     pg.display.update()
+

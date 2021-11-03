@@ -1,0 +1,8 @@
+score, time, isWin, algo40,11.125516653060913,True,alpha-beta pruning
+40,11.080651044845581,True,alpha-beta pruning
+40,11.272403001785278,True,expectimax minimax
+40,10.031762599945068,True,alpha-beta pruning
+40,11.036223411560059,True,expectimax minimax
+40,12.47105073928833,True,expectimax minimax
+40,11.227936267852783,True,expectimax minimax
+40,12.195305109024048,True,alpha-beta pruning

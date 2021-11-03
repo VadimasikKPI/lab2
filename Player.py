@@ -38,14 +38,20 @@ class Player:
 
 
     def moveplayerToEnemy(self, enemy, index, bullet, window):
-        if self.playerXcoord < enemy.enemyXcoord[index]:
+        if self.playerXcoord - enemy.enemyXcoord[index] < -10:
             self.playerSpeedChange = 0.5
-        elif self.playerXcoord > enemy.enemyXcoord[index]:
+
+
+        elif self.playerXcoord - enemy.enemyXcoord[index] >10:
             self.playerSpeedChange = -0.5
+
+
         else:
             self.playerSpeedChange = 0
-            bullet.set_bulletXcoord(self.get_playerXcoord())
-            bullet.bullet(bullet.get_bulletXcoord(), bullet.get_bulletYcoord(), window)
-            bullet.changeYcoord(-bullet.get_bulletHightChange())
+            if bullet.bulletIsReady == "Ready":
+                bullet.set_bulletXcoord(self.get_playerXcoord())
+                bullet.bullet(bullet.get_bulletXcoord(), bullet.get_bulletYcoord(), window)
+                bullet.changeYcoord(-bullet.get_bulletHightChange())
+
 
 

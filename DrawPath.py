@@ -1,22 +1,37 @@
-#from algoritms import bfs, ucs, dfs
+from algoritms import dfs1
 from A_star import a_star_search, reconstruct_path, findWayToEnemy
 import pygame as pg
+import random
 
 def drawPath_Astar(window, enemy, graph, player, bullet):
     lastpath = []
+
     for i in range(enemy.numOfEnemiesforalgo):
         yPlayer, xPlayer = player.get_positionPlayer()
-        yEemy, xEnemy = enemy.get_positionEnemy(i)
-        path1 = a_star_search(graph, (yPlayer, xPlayer), (yEemy, xEnemy))
-        path = reconstruct_path(path1, (yPlayer, xPlayer), (yEemy, xEnemy))
+        yEnemy, xEnemy = enemy.get_positionEnemy(i)
+        yBullet, xBullet = bullet.get_bulletCoord()
+        path1 = a_star_search(graph, (yPlayer, xPlayer), (yEnemy, xEnemy))
+        path = reconstruct_path(path1, (yPlayer, xPlayer), (yEnemy, xEnemy))
         lastpath.append(path)
+        if yBullet - yEnemy == 2 and xBullet == xEnemy:
+
+            if i < 2:
+                enemy.enemyMoveRight(i)
+
+            else:
+                enemy.enemyMoveLeft(i)
+        else:
+            if enemy.enemyNumber[i] ==1 or enemy.enemyNumber[i] ==3:
+                enemy.enemySpeedChange[i] = 0
+
+
     cost = lastpath
-    index = findWayToEnemy(cost)
-    # for i in range(len(cost[index])):
-    #     (y, x) = cost[index][i]
-    #     x = x * 64
-    #     y = y * 64
-    #     pg.draw.rect(window, (0, 0, 255), pg.Rect(x, y, 48, 48))
+    if enemy.numOfEnemiesforalgo == 1:
+        index = enemy.positionLastEnemy()
+
+    else:
+        index = findWayToEnemy(cost, enemy.numOfEnemiesforalgo)
+
     player.moveplayerToEnemy(enemy, index, bullet, window)
 
 

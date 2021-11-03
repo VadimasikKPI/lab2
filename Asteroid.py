@@ -21,7 +21,7 @@ class Asteroid:
                 self.asteroidXcoord.append(640)
                 self.asteroidYcoord.append(350)
             if counter == 4:
-                self.asteroidXcoord.append(170)
+                self.asteroidXcoord.append(200)
                 self.asteroidYcoord.append(250)
             if counter == 5:
                 self.asteroidXcoord.append(510)
