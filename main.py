@@ -1,4 +1,5 @@
 import random
+import hy
 
 import pygame as pg
 from Player import Player
@@ -106,7 +107,7 @@ while isClose:
         if game_end_count == 1:
             last_time = time.time() - start_time
             rand = random.choice(['expectimax minimax', 'alpha-beta pruning'])
-            print(rand)
+
             csv_write('data.csv', [str(game.score), str(last_time), str('True'), str(rand)])
 
 

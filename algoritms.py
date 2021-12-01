@@ -106,30 +106,16 @@ def get_path(parents, finish_coord):
     while current != None:
         arr.insert(0, current)
         current = parents[current]
-
     return arr
 
-def evaluation_function(enemy, player):
-    centre_player = (
-        player.playerXcoord + 32,
-        player.playerYcoord + 32)
-    distances = []
-    for i in enemy.numOfEnemies:
-        distances.append((centre_player, (enemy.enemyXcoord[i] + 32, enemy.enemyYcoord[i] + 32)))
-    try:
-        minvalue = min(distances)
-    except ValueError:
-        minvalue = 0
-    return minvalue
 
-
-def alphabeta(node: Node, depth, a, b, maximizingPlayer):
+def alphabeta(node: Node, depth, a, b, maximizingPlayer, enemy, player):
     if depth == 0 or node.is_terminal:
-        return (node.evaluation_function(), node)
+        return  node.evaluation_function(enemy, player), node
     if maximizingPlayer:
         value = -float('inf')
         best_node = node
-        for child in node.generate_children():
+        for child in node.generate_children(player):
             alphaResult, alphaNode = alphabeta(child, depth - 1, a, b, True)
             if alphaResult > value:
                 value = alphaResult
@@ -143,7 +129,7 @@ def alphabeta(node: Node, depth, a, b, maximizingPlayer):
         worst_node = node
         value = float('inf')
 
-        for child in node.generate_children():
+        for child in node.generate_children(player):
             alphaResult, alphaNode = alphabeta(child, depth - 1, a, b, False)
             if alphaResult < value:
                 value = alphaResult
@@ -155,14 +141,14 @@ def alphabeta(node: Node, depth, a, b, maximizingPlayer):
         return (value, worst_node)
 
 
-def expectiminimax(node: Node, depth, maximizingPlayer):
+def expectiminimax(node: Node, depth, maximizingPlayer, player, enemy):
     if depth == 0 or node.is_terminal:
-        return (node.evaluation_function(), node)
+        return (node.evaluation_function(enemy, player), node)
     if maximizingPlayer:
-        result = [expectiminimax(child, depth - 1, False) for child in node.generate_children()]
+        result = [expectiminimax(child, depth - 1, False) for child in node.generate_children(player)]
         alphaResult, alphaNode = max(result, key=lambda x: x[0], default=node)
         return (alphaResult / len(result), alphaNode)
     else:
-        result = [expectiminimax(child, depth - 1, True) for child in node.generate_children()]
+        result = [expectiminimax(child, depth - 1, True) for child in node.generate_children(player)]
         alphaResult, alphaNode = min(result, key=lambda x: x[0], default=node)
         return (alphaResult / len(result), alphaNode)
